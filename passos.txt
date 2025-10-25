@@ -1,0 +1,14 @@
+//Configurando o GITHUB:
+git config --global user.name aureliovianadev
+git config --global user.email aureliovianadev@gmail.com
+
+//Listar os SDK:
+dotnet --list-sdks
+
+//Criando um projeto :
+dotnet new webapi -o <NOME DO PROJETO>.API --use-controllers
+
+
+//Executar o projeto:
+cd Phonelab
+dotnet watch run
