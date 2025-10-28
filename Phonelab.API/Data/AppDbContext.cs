@@ -1,7 +1,7 @@
-using Phonelab.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Phonelab.API.Models;
 
 namespace Phonelab.API.Data;
    public class AppDbContext : IdentityDbContext<Usuario>
