@@ -32,10 +32,10 @@ namespace Phonelab.API.Data;
                Name = "Administrador",
                NormalizedName = "ADMINISTRADOR"
             },
-            new IdentityRole() {
+             new IdentityRole() {
                Id = "ddf093a6-6cb5-4ff7-9a64-83da34aee005",
-               Name = "Usuário",
-               NormalizedName = "USUÁRIO"
+               Name = "Cliente",
+               NormalizedName = "CLIENTE"
             },
         ];
         builder.Entity<IdentityRole>().HasData(roles);
@@ -80,7 +80,22 @@ namespace Phonelab.API.Data;
     {
         List<Categoria> categorias = new()
         {
-            // Criar suas categorias
+                new Categoria() {
+                Id = 1,
+                Nome = "Apple"
+            },
+            new Categoria() {
+                Id = 2,
+                Nome = "Samsung"
+            },
+            new Categoria() {
+                Id = 3,
+                Nome = "Motorola"
+            },
+            new Categoria() {
+                Id = 4,
+                Nome = "Xiaomi"
+            }
         };
         builder.Entity<Categoria>().HasData(categorias);
     }
@@ -89,7 +104,14 @@ namespace Phonelab.API.Data;
     {
         List<Produto> produtos = new()
         {
-            // Criar seus produtos
+            new Produto { Id = 1, CategoriaId = 1, Nome = "iPhone 17 Pro Max", Descricao = "asedgfdasgasd", Qtde = 10, ValorCusto = 5599.10m, ValorVenda = 12599.10m, Destaque = true, Foto = "/img/produtos/1.webp" },
+            new Produto { Id = 2, CategoriaId = 1, Nome = "iPhone 17", ValorCusto = 7198.96m },
+            new Produto { Id = 3, CategoriaId = 2, Nome = "Samsung Galaxy S25 Ultra", ValorCusto = 8598.28m },
+            new Produto { Id = 4, CategoriaId = 2, Nome = "Samsung Galaxy S25", ValorCusto = 4441.11m },
+            new Produto { Id = 5, CategoriaId = 3, Nome = "Motorola Edge 60 Pro", ValorCusto = 3399.99m },
+            new Produto { Id = 6, CategoriaId = 3, Nome = "Motorola Edge 60 Fusion", ValorCusto = 1979.99m },
+            new Produto { Id = 7, CategoriaId = 4, Nome = "Xiaomi 15T", ValorCusto = 3930.99m },
+            new Produto { Id = 8, CategoriaId = 4, Nome = "Xiaomi Poco X7 Pro", ValorCusto = 2133.03m }
         };
         builder.Entity<Produto>().HasData(produtos);
     }

@@ -5,9 +5,13 @@ namespace Phonelab.API.Models;
 [Table("Produto")]
 public class Produto
 {
-    [Key] public int Id { get; set; }
+    [Key]
+    public int Id { get; set; }
+
+    [Required]
     public int CategoriaId { get; set; }
     [ForeignKey("CategoriaId")]
+    public Categoria Categoria { get; set; }
     
     [StringLength(100)]
     [Required(ErrorMessage = "O Nome é obrigatório")]
@@ -16,8 +20,8 @@ public class Produto
     [StringLength(3000)]
     [Required(ErrorMessage = "A trancrição é obrigatória")]
     public string Descricao { get; set; }
-    public int QtdeId { get; set; }
-    [ForeignKey("QtdeId")]
+
+    public int Qtde { get; set; }
 
     [Column(TypeName = "decimal(12,2)")]
     [Display(Name = "Valor de Custo")]
@@ -30,8 +34,7 @@ public class Produto
     public decimal ValorVenda { get; set; }
 
     [Display(Name = "Destaque")]
-    [Required]
-    public bool Destaque { get; set; } = false;
+     public bool Destaque { get; set; } = false;
 
     [StringLength(300)]
     public string Foto { get; set; }

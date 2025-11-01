@@ -10,5 +10,5 @@ dotnet new webapi -o <NOME DO PROJETO>.API --use-controllers
 
 
 //Executar o projeto:
-cd Phonelab
+cd Phonelab.API
 dotnet watch run
