@@ -1,6 +1,9 @@
 using System.Text;
 using Phonelab.API.Data;
+using Phonelab.API.Middleware;
 using Phonelab.API.Models;
+using Phonelab.API.Services.Implementations;
+using Phonelab.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -64,7 +67,13 @@ builder.Services.AddAuthentication(options =>
 // Adicionar a Autorização
 builder.Services.AddAuthorization();
 
-// Registro dos Serviços 
+// Serviço de Arquivos
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IFileService, FileService>();
+
+// Registro dos Serviços Customizados
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Configuração do CORS
 builder.Services.AddCors(options =>
@@ -82,7 +91,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "<NOME DO PROJETO> API",
+        Title = "Phonelab API",
         Version = "v1",
         Description = "API de fornecimento de dados de produtos"
     });
@@ -127,14 +136,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "GStore v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "<NOME DO PROJETO> v1");
         c.RoutePrefix = string.Empty;
     });
 }
 
 app.UseHttpsRedirection();
 
+app.UseStaticFiles();
+
 app.UseCors("AllowAll");
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -142,3 +155,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
