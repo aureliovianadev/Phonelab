@@ -1,10 +1,15 @@
+using Phonelab.UI;
+using Phonelab.UI.Middleware;
 using Phonelab.UI.Models;
+using Phonelab.UI.Services.Implementations;
+using Phonelab.UI.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Configurações
 builder.Services.Configure<ApiSettings>(
     builder.Configuration.GetSection("ApiSettings"));
+builder.Services.AddScoped<UserContextService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -32,22 +37,30 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("Administrador", policy => 
+    options.AddPolicy("Administrador", policy =>
         policy.RequireRole("Administrador"));
-    
-    options.AddPolicy("Gerente", policy => 
+
+    options.AddPolicy("Gerente", policy =>
         policy.RequireRole("Gerente"));
-    
-    options.AddPolicy("Cliente", policy => 
+
+    options.AddPolicy("Cliente", policy =>
         policy.RequireRole("Cliente"));
 });
 
 builder.Services.AddHttpContextAccessor();
 
-// Serviços de API
+// AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingConfig));
 
+// Serviços de API
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -61,6 +74,13 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseSession();
 
+app.Use(async (context, next) =>
+{
+    var userContextService = context.RequestServices.GetRequiredService<UserContextService>();
+    context.User = userContextService.CreateClaimsPrincipal();
+    await next();
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -71,6 +91,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-app.Run();
 
+app.Run();
 
